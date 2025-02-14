@@ -1,8 +1,11 @@
 import java.util.Map;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 class Main {
+	private static final MathContext context = new MathContext(8, RoundingMode.HALF_UP);
+
 	enum Unit {
 		NULL,
 		// Imperial Length
@@ -34,14 +37,13 @@ class Main {
 		Map.entry(Unit.INCH,			new BigDecimal("0.0254")),
 
 		Map.entry(Unit.HOUR,			new BigDecimal("1.0")),
-		Map.entry(Unit.MINUTE,		new BigDecimal("60.0")),
-		Map.entry(Unit.SECOND,		new BigDecimal("3600.0"))
+		Map.entry(Unit.MINUTE,		BigDecimal.ONE.divide(new BigDecimal(60), context)), // Impresise unit
+		Map.entry(Unit.SECOND,		BigDecimal.ONE.divide(new BigDecimal(3600), context))
 	);
 
-	// private static final int MAX_PRECISION = 2;
 
 	public static BigDecimal convert(Unit origin, Unit convert, BigDecimal count) {
-		BigDecimal factor = conversionFactors.get(origin).divide(conversionFactors.get(convert));
+		BigDecimal factor = conversionFactors.get(origin).divide(conversionFactors.get(convert), context);
 		BigDecimal result = count.multiply(factor);
 		return result;
 	}
