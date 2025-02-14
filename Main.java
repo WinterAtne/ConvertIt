@@ -5,7 +5,6 @@
 */
 import java.util.Map;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 
 class Main {
@@ -16,19 +15,32 @@ class Main {
 		INCH,
 		// Metric Length
 		METER,
+
+		// Time
+		SECOND,
+		MINUTE,
+		HOUR,
 	}
 
 	private static final Map<String, Unit> unitNames = Map.ofEntries(
 		Map.entry("feet",				Unit.FOOT),
 		Map.entry("inches",			Unit.INCH),
-		Map.entry("meters",			Unit.METER)
+		Map.entry("meters",			Unit.METER),
+
+		Map.entry("second",				Unit.SECOND),
+		Map.entry("minute",				Unit.MINUTE),
+		Map.entry("hour",					Unit.HOUR)
 	);
 
 	// Map of all length conversion to meters
 	private static final Map<Unit, BigDecimal> conversionFactors = Map.ofEntries(
+		Map.entry(Unit.METER,		new BigDecimal("1.0")),
 		Map.entry(Unit.FOOT,			new BigDecimal("3.28084")),
 		Map.entry(Unit.INCH,			new BigDecimal("39.375")),
-		Map.entry(Unit.METER,		new BigDecimal("1.0"))
+
+		Map.entry(Unit.HOUR,				new BigDecimal("1.0")),
+		Map.entry(Unit.MINUTE,			new BigDecimal("60.0")),
+		Map.entry(Unit.SECOND,			new BigDecimal("3600.0"))
 	);
 
 	private static final int MAX_PRECISION = 5;
