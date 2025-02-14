@@ -4,6 +4,9 @@
  *
 */
 import java.util.Map;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 class Main {
 	enum Unit {
@@ -16,20 +19,24 @@ class Main {
 	}
 
 	private static final Map<String, Unit> unitNames = Map.ofEntries(
-		Map.entry("feet", Unit.FOOT),
-		Map.entry("inches", Unit.INCH),
-		Map.entry("meters", Unit.METER)
+		Map.entry("feet",				Unit.FOOT),
+		Map.entry("inches",			Unit.INCH),
+		Map.entry("meters",			Unit.METER)
 	);
 
 	// Map of all length conversion to meters
-	private static final Map<Unit, Double> conversionFactors = Map.ofEntries(
-		Map.entry(Unit.FOOT, 3.28084),
-		Map.entry(Unit.INCH, 39.37),
-		Map.entry(Unit.METER, 1.0)
+	private static final Map<Unit, BigDecimal> conversionFactors = Map.ofEntries(
+		Map.entry(Unit.FOOT,			new BigDecimal("3.28084")),
+		Map.entry(Unit.INCH,			new BigDecimal("39.375")),
+		Map.entry(Unit.METER,		new BigDecimal("1.0"))
 	);
 
-	public static Double convert(Unit origin, Unit convert, Double count) {
-		return (count / conversionFactors.get(origin)) * conversionFactors.get(convert);
+	private static final int MAX_PRECISION = 5;
+
+	public static BigDecimal convert(Unit origin, Unit convert, BigDecimal count) {
+		BigDecimal meters = count.divide(conversionFactors.get(origin), MAX_PRECISION, RoundingMode.HALF_UP);
+		BigDecimal result = meters.multiply(conversionFactors.get(convert));
+		return result;
 	}
 
 	public static void main(String[] Args) {
@@ -41,6 +48,8 @@ class Main {
 		String rawCount = Args[0];
 		String rawOrigin = Args[1];
 		String rawConvert = Args[2];
+
+		BigDecimal count = new BigDecimal(rawCount);
 
 		Unit origin = unitNames.getOrDefault(rawOrigin, Unit.NULL);
 		if (origin == Unit.NULL) {
@@ -54,9 +63,8 @@ class Main {
 			System.exit(1);
 		}
 
-		Double count = Double.parseDouble(rawCount);
 		
-		Double converted = convert(origin, convert, count);
+		BigDecimal converted = convert(origin, convert, count);
 
 		System.out.println(converted);
 
