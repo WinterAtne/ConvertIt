@@ -1,8 +1,3 @@
-/*
- *
- * This program is almost always wrong
- *
-*/
 import java.util.Map;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -35,19 +30,19 @@ class Main {
 	// Map of all length conversion to meters
 	private static final Map<Unit, BigDecimal> conversionFactors = Map.ofEntries(
 		Map.entry(Unit.METER,		new BigDecimal("1.0")),
-		Map.entry(Unit.FOOT,			new BigDecimal("3.28084")),
-		Map.entry(Unit.INCH,			new BigDecimal("39.375")),
+		Map.entry(Unit.FOOT,			new BigDecimal("0.3048")),
+		Map.entry(Unit.INCH,			new BigDecimal("0.0254")),
 
-		Map.entry(Unit.HOUR,				new BigDecimal("1.0")),
-		Map.entry(Unit.MINUTE,			new BigDecimal("60.0")),
-		Map.entry(Unit.SECOND,			new BigDecimal("3600.0"))
+		Map.entry(Unit.HOUR,			new BigDecimal("1.0")),
+		Map.entry(Unit.MINUTE,		new BigDecimal("60.0")),
+		Map.entry(Unit.SECOND,		new BigDecimal("3600.0"))
 	);
 
-	private static final int MAX_PRECISION = 5;
+	// private static final int MAX_PRECISION = 2;
 
 	public static BigDecimal convert(Unit origin, Unit convert, BigDecimal count) {
-		BigDecimal meters = count.divide(conversionFactors.get(origin), MAX_PRECISION, RoundingMode.HALF_UP);
-		BigDecimal result = meters.multiply(conversionFactors.get(convert));
+		BigDecimal factor = conversionFactors.get(origin).divide(conversionFactors.get(convert));
+		BigDecimal result = count.multiply(factor);
 		return result;
 	}
 
