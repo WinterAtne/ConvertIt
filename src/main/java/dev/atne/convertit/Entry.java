@@ -1,9 +1,11 @@
+package dev.atne.convertit;
+
 import java.util.Map;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-class Main {
+public class Entry {
 	private static final MathContext context = new MathContext(8, RoundingMode.HALF_UP);
 
 	enum Unit {
