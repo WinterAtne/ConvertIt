@@ -6,3 +6,4 @@
  */
 
 rootProject.name = "ConvertIt"
+include("app")
