@@ -1,8 +1,8 @@
-import dev.atne.convertit.*;
+package dev.atne.convertit;
 
 import org.junit.Test;
 
-public class MainTest {
+public class EntryTest {
 	@Test
 	public void testMain() {
 		String[] sArg = new String[]{
