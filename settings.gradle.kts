@@ -6,4 +6,4 @@
  */
 
 rootProject.name = "ConvertIt"
-include("app")
+include(":app", ":core")

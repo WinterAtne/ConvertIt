@@ -1,14 +1,14 @@
-package dev.atne.convertit;
+package dev.atne.convertit.core;
 
 import java.util.Map;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-public class Entry {
+public class Convert {
 	private static final MathContext context = new MathContext(8, RoundingMode.HALF_UP);
 
-	enum Unit {
+	public enum Unit {
 		NULL,
 		// Imperial Length
 		FOOT,
@@ -44,24 +44,7 @@ public class Entry {
 	);
 
 
-	public static BigDecimal convert(Unit origin, Unit convert, BigDecimal count) {
-		BigDecimal factor = conversionFactors.get(origin).divide(conversionFactors.get(convert), context);
-		BigDecimal result = count.multiply(factor);
-		return result;
-	}
-
-	public static void main(String[] Args) {
-		if (Args.length < 3) { // Guard
-			System.out.println("Not enought arguments");
-			System.exit(1);
-		}
-
-		String rawCount = Args[0];
-		String rawOrigin = Args[1];
-		String rawConvert = Args[2];
-
-		BigDecimal count = new BigDecimal(rawCount);
-
+	public static BigDecimal convert(String rawOrigin, String rawConvert, BigDecimal count) {
 		Unit origin = unitNames.getOrDefault(rawOrigin, Unit.NULL);
 		if (origin == Unit.NULL) {
 			System.out.println("Invalid origin unit \"" + rawOrigin + "\"");
@@ -74,10 +57,8 @@ public class Entry {
 			System.exit(1);
 		}
 
-		
-		BigDecimal converted = convert(origin, convert, count);
-
-		System.out.println(converted);
-
+		BigDecimal factor = conversionFactors.get(origin).divide(conversionFactors.get(convert), context);
+		BigDecimal result = count.multiply(factor);
+		return result;
 	}
 }

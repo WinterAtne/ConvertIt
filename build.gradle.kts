@@ -4,7 +4,14 @@ plugins {
 }
 
 application {
-	mainClass = "dev.atne.convertit.Entry"
+	mainClass = "dev.atne.convertit.app.Entry"
+}
+
+
+tasks.named<Jar>("jar") {
+	manifest {
+		attributes["Main-Class"] = "dev.atne.convertit.app.Entry"
+	}
 }
 
 allprojects {
@@ -16,6 +23,8 @@ allprojects {
 }
 
 dependencies {
-	implementation(files("app/build/libs/app.jar"))
+	implementation(project(":app"))
+	// implementation(files("core/build/libs/core.jar"))
+	// implementation(project(":core"))
 }
 
