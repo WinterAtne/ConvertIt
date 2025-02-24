@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import dev.atne.convertit.core.*;
 
 public class Entry {
+
 	public static void main(String[] Args) {
 		if (Args.length < 3) { // Guard
 			System.out.println("Not enought arguments");
