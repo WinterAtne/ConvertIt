@@ -21,7 +21,7 @@ public class Convert {
 			System.exit(1);
 		}
 
-		BigDecimal factor = Quantity.conversionFactors.get(origin).divide(Quantity.conversionFactors.get(convert), context);
+		BigDecimal factor = Quantity.unitScalers.get("length").get(origin).divide(Quantity.unitScalers.get("length").get(convert), context);
 		BigDecimal result = count.multiply(factor);
 		return result;
 	}

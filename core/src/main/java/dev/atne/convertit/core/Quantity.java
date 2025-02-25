@@ -12,10 +12,28 @@ public final class Quantity {
 	// Map of all the alternative names to the base name
 	public static final Map<String, String> unitNames = new HashMap<String, String>();
 
-	// Map of all length conversion to meters
-	public static final Map<String, BigDecimal> conversionFactors = new HashMap<String, BigDecimal>();
+	private static final String[] baseUnits = {
+		"time",
+		"length",
+		"mass",
+		"current",
+		"temperature",
+		"amount",
+		"luminosity",
+	};
+
+	// The twin evils (These are the same, they just have different names)
+	public static final HashMap<String, HashMap<String, BigDecimal>> unitScalers = 
+		new HashMap<String, HashMap<String, BigDecimal>>();
+	public static final HashMap<String, HashMap<String, BigDecimal>> unitVectors = 
+		new HashMap<String, HashMap<String, BigDecimal>>();
 
 	static {
+		for (String u : baseUnits) {
+			unitScalers.put(u, new HashMap<String, BigDecimal>());
+			unitVectors.put(u, new HashMap<String, BigDecimal>());
+		}
+		
 		JSONArray unitsIndex = loadJSONResource("units_index").getJSONArray("index");
 
 		for (int i = 0; i < unitsIndex.length(); i++) {
@@ -28,8 +46,14 @@ public final class Quantity {
 				unitNames.put(alternative_names.getString(k), name); 
 			}
 
-			BigDecimal factor = obj.getBigDecimal("length_scaler");
-			conversionFactors.put(name, factor);
+			for (String u : baseUnits) {
+				final String scaler = u + "_scaler";
+				final String vector = u + "_vector";
+				if (!obj.has(scaler)) { continue; }
+				
+				unitScalers.get(u).put(name, obj.getBigDecimal(scaler));
+				unitVectors.get(u).put(name, obj.getBigDecimal(vector));
+			}
 		}
 	}
 
@@ -43,21 +67,13 @@ public final class Quantity {
 		return new JSONObject(result);
 	}
 
-	// Indicies into the arrays
-	private final short TIME 			= 0;
-	private final short LENGTH 		= 1;
-	private final short MASS 			= 2;
-	private final short CURRENT 		= 3;
-	private final short TEMPERATURE 	= 4;
-	private final short AMOUNT 		= 5;
-	private final short LUMINOSITY 	= 6;
-	private final short UNIT_COUNT	= 7; // SHOULD ALWAYS BE THE LAST INDEX ++;
-
+	private final String definition;
 	// Every quantity has a value and a unit
 	// Every unit is made up of smaller units, raised to a power
-	private final BigDecimal[] scaler = new BigDecimal[UNIT_COUNT];
-	private final BigDecimal[] vector = new BigDecimal[UNIT_COUNT];
+	private final BigDecimal   scaler = new BigDecimal("0");
+	private final BigDecimal[] vector = new BigDecimal[baseUnits.length];
 
 	public Quantity(String definition) {
+		this.definition = definition;
 	}
 }

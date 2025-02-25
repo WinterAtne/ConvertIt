@@ -1,0 +1,10 @@
+{
+	"name":"meter",
+	"alternative_names":[
+		"m",
+		"meters"
+	],
+	"length_vector":1.0,
+	"length_scaler":1.0
+}
+
