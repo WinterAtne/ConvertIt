@@ -16,7 +16,7 @@ public final class Quantity {
 
 	private static final JSONObject loadJSONResource(String name) {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		InputStream unitsIndexSource = classloader.getResourceAsStream(name + ".json");
+		InputStream unitsIndexSource = classloader.getResourceAsStream("units/" + name + ".json");
 		Scanner scanner = new Scanner(unitsIndexSource).useDelimiter("\\A");
 		String result = scanner.hasNext() ? scanner.next() : "";
 		scanner.close();
@@ -25,10 +25,10 @@ public final class Quantity {
 	}
 
 	static {
-		JSONArray unitsIndex = loadJSONResource("units/units_index").getJSONArray("index");
+		JSONArray unitsIndex = loadJSONResource("units_index").getJSONArray("index");
 
 		for (int i = 0; i < unitsIndex.length(); i++) {
-			JSONObject obj = loadJSONResource("units/" + unitsIndex.getString(i));
+			JSONObject obj = loadJSONResource(unitsIndex.getString(i));
 			
 			String name = obj.getString("name");
 			JSONArray alternative_names = obj.getJSONArray("alternative_names");
@@ -54,14 +54,9 @@ public final class Quantity {
 
 	// Every quantity has a value and a unit
 	// Every unit is made up of smaller units, raised to a power
-	private final BigDecimal   scaler = new BigDecimal("0");
+	private final BigDecimal[] scaler = new BigDecimal[7];
 	private final BigDecimal[] vector = new BigDecimal[7];
 
 	public Quantity(String definition) {
 	}
-
-	public BigDecimal getValue() {
-		return scaler;
-	}
-
 }
