@@ -3,7 +3,7 @@
 	"alternative_names":[
 		"f",
 		"feet"
-	]
+	],
 	"length_vector":1,
-	"length_scaler":0.3048,
+	"length_scaler":0.3048
 }
