@@ -9,20 +9,11 @@ import org.json.JSONObject;
 import java.io.*;
 
 public final class Quantity {
+	// Map of all the alternative names to the base name
 	public static final Map<String, String> unitNames = new HashMap<String, String>();
 
 	// Map of all length conversion to meters
 	public static final Map<String, BigDecimal> conversionFactors = new HashMap<String, BigDecimal>();
-
-	private static final JSONObject loadJSONResource(String name) {
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		InputStream unitsIndexSource = classloader.getResourceAsStream("units/" + name + ".json");
-		Scanner scanner = new Scanner(unitsIndexSource).useDelimiter("\\A");
-		String result = scanner.hasNext() ? scanner.next() : "";
-		scanner.close();
-
-		return new JSONObject(result);
-	}
 
 	static {
 		JSONArray unitsIndex = loadJSONResource("units_index").getJSONArray("index");
@@ -42,20 +33,30 @@ public final class Quantity {
 		}
 	}
 
+	private static final JSONObject loadJSONResource(String name) {
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		InputStream unitsIndexSource = classloader.getResourceAsStream("units/" + name + ".json");
+		Scanner scanner = new Scanner(unitsIndexSource).useDelimiter("\\A");
+		String result = scanner.hasNext() ? scanner.next() : "";
+		scanner.close();
+
+		return new JSONObject(result);
+	}
 
 	// Indicies into the arrays
-	private final short time 			= 0;
-	private final short length 		= 1;
-	private final short mass 			= 2;
-	private final short current 		= 3;
-	private final short temperature 	= 4;
-	private final short amount 		= 5;
-	private final short luminosity 	= 6;
+	private final short TIME 			= 0;
+	private final short LENGTH 		= 1;
+	private final short MASS 			= 2;
+	private final short CURRENT 		= 3;
+	private final short TEMPERATURE 	= 4;
+	private final short AMOUNT 		= 5;
+	private final short LUMINOSITY 	= 6;
+	private final short UNIT_COUNT	= 7; // SHOULD ALWAYS BE THE LAST INDEX ++;
 
 	// Every quantity has a value and a unit
 	// Every unit is made up of smaller units, raised to a power
-	private final BigDecimal[] scaler = new BigDecimal[7];
-	private final BigDecimal[] vector = new BigDecimal[7];
+	private final BigDecimal[] scaler = new BigDecimal[UNIT_COUNT];
+	private final BigDecimal[] vector = new BigDecimal[UNIT_COUNT];
 
 	public Quantity(String definition) {
 	}
