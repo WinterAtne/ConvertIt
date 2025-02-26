@@ -9,20 +9,20 @@ public class Convert {
 
 
 	public static BigDecimal convert(String rawOrigin, String rawConvert, BigDecimal count) {
-		String origin = Quantity.unitNames.getOrDefault(rawOrigin, "null");
-		if (origin == "null") {
-			System.out.println("Invalid origin unit \"" + rawOrigin + "\"");
-			System.exit(1);
-		}
+		// String origin = Quantity.unitNames.getOrDefault(rawOrigin, "null");
+		// if (origin == "null") {
+		// 	System.out.println("Invalid origin unit \"" + rawOrigin + "\"");
+		// 	System.exit(1);
+		// }
+		//
+		// String convert = Quantity.unitNames.getOrDefault(rawConvert, "null");
+		// if (convert == "null") {
+		// 	System.out.println("Invalid convert unit \"" + rawConvert + "\"");
+		// 	System.exit(1);
+		// }
 
-		String convert = Quantity.unitNames.getOrDefault(rawConvert, "null");
-		if (convert == "null") {
-			System.out.println("Invalid convert unit \"" + rawConvert + "\"");
-			System.exit(1);
-		}
-
-		BigDecimal factor = Quantity.unitScalers.get("length").get(origin).divide(Quantity.unitScalers.get("length").get(convert), context);
-		BigDecimal result = count.multiply(factor);
-		return result;
+		Quantity a = new Quantity(count.toString() + " " + rawOrigin);
+		Quantity b = new Quantity("0" + " " + rawConvert);
+		return Quantity.Convert(a, b);
 	}
 }

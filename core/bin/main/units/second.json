@@ -1,0 +1,10 @@
+{
+	"name":"second",
+	"alternative_names":[
+		"s",
+		"seconds"
+	],
+	"time_vector":1.0,
+	"time_scaler":1.0
+}
+
