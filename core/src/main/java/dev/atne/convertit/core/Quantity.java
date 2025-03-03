@@ -73,11 +73,32 @@ public class Quantity {
 	// Every quantity has a value and a unit
 	// Every unit is made up of smaller units, raised to a power
 	private final BigDecimal   value; // A scaler multiple representing the "number" of units
-	private final BigDecimal[] scalers = new BigDecimal[baseUnits.length]; // Define the offset multiple from the base unit
-	private final BigDecimal[] vectors = new BigDecimal[baseUnits.length]; // Define the dimension of the unit
+	private final BigDecimal[] scalers; // Define the offset multiple from the base unit
+	private final BigDecimal[] vectors; // Define the dimension of the unit
+
+	private static BigDecimal pow(BigDecimal a, BigDecimal b) {
+		return a.pow(b.intValue());
+	}
+
+	public static Quantity Convert(Quantity a, Quantity b) {
+		BigDecimal value = a.value;
+
+		for (int i = 0; i < baseUnits.length; i++) {
+			if (a.scalers[i] == null || a.vectors[i] == null || b.scalers[i] == null || b.vectors[i] == null) {
+				continue;
+			}
+
+			BigDecimal factor = pow(a.scalers[i].divide(b.scalers[i]), b.vectors[i]);
+			value = value.multiply(factor);
+		}
+
+		return new Quantity(value, b);
+	}
 
 	public Quantity(String definition) {
 		this.definition = definition;
+		this.scalers = new BigDecimal[baseUnits.length];
+		this.vectors = new BigDecimal[baseUnits.length];
 		String unitBoundries = "[ \\/\\*]";
 		String[] u = this.definition.split(unitBoundries);
 		value = new BigDecimal(u[0]);
@@ -99,8 +120,14 @@ public class Quantity {
 		}
 	}
 
-	public static BigDecimal Convert(Quantity a, Quantity b) {
-		BigDecimal factor = a.scalers[1].divide(b.scalers[1]);
-		return a.value.multiply(factor);
+	public Quantity(BigDecimal value, Quantity unit) {
+		this.definition = value.toString() + unit.definition.split(" ")[1];
+		this.value = value;
+		this.scalers = unit.scalers;
+		this.vectors = unit.vectors;
+	}
+
+	public BigDecimal getValue() {
+		return this.value;
 	}
 }

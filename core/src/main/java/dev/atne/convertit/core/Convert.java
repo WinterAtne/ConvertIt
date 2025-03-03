@@ -8,7 +8,7 @@ public class Convert {
 	private static final MathContext context = new MathContext(8, RoundingMode.HALF_UP);
 
 
-	public static BigDecimal convert(String rawOrigin, String rawConvert, BigDecimal count) {
+	public static Quantity convert(String rawOrigin, String rawConvert, BigDecimal count) {
 		// String origin = Quantity.unitNames.getOrDefault(rawOrigin, "null");
 		// if (origin == "null") {
 		// 	System.out.println("Invalid origin unit \"" + rawOrigin + "\"");
