@@ -89,6 +89,7 @@ public class Quantity {
 			}
 
 			BigDecimal factor = pow(a.scalers[i].divide(b.scalers[i]), b.vectors[i]);
+			System.out.println(value + " " + factor);
 			value = value.multiply(factor);
 		}
 
@@ -114,20 +115,35 @@ public class Quantity {
 				assert vectorMap != null : "Base unit " + base + "  doesn't exist";
 
 
-				scalers[k] = scalerMap.getOrDefault(properName, null);
-				vectors[k] = vectorMap.getOrDefault(properName, null);
+				this.scalers[k] = scalerMap.getOrDefault(properName, null);
+				this.vectors[k] = vectorMap.getOrDefault(properName, null);
 			}
 		}
 	}
 
 	public Quantity(BigDecimal value, Quantity unit) {
-		this.definition = value.toString() + unit.definition.split(" ")[1];
-		this.value = value;
-		this.scalers = unit.scalers;
-		this.vectors = unit.vectors;
+		this((value.toString() + " " + unit.definition.split(" ")[1]));
+	}
+
+	public Boolean isEqual(Quantity that) {
+		if (this.definition.length() != that.definition.length()) {
+			return false;
+		}
+
+		for (int i = 0; i < this.definition.length(); i++) {
+			if (this.definition.charAt(i) != that.definition.charAt(i)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public BigDecimal getValue() {
 		return this.value;
+	}
+
+	public String toString() {
+		return this.definition;
 	}
 }

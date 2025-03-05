@@ -23,6 +23,7 @@ public class Convert {
 
 		Quantity a = new Quantity(count.toString() + " " + rawOrigin);
 		Quantity b = new Quantity("0" + " " + rawConvert);
-		return Quantity.Convert(a, b);
+		var c = Quantity.Convert(a,b);
+		return c;
 	}
 }
