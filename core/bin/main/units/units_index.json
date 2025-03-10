@@ -1,6 +1,8 @@
 {
 	"index": [
 		"foot",
-		"meter"
+		"meter",
+		"second",
+		"minute"
 	]
 }
