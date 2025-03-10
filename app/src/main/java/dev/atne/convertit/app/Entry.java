@@ -17,9 +17,5 @@ public class Entry {
 
 		BigDecimal count = new BigDecimal(rawCount);
 
-		BigDecimal converted = Convert.convert(rawOrigin, rawConvert, count).getValue();
-
-		System.out.println(converted);
-
 	}
 }
