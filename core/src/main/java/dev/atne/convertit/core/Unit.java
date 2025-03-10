@@ -30,6 +30,22 @@ public class Unit {
 		return true;
 	}
 
+	public static Boolean IsEqual(Unit a, Unit b) {
+		assert (a.vectors.length == b.vectors.length);
+		assert (a.scalers.length == b.scalers.length);
+
+		for (int i = 0; i < a.vectors.length; i++) {
+			if (a.vectors[i].compareTo(b.vectors[i]) != 0)  {
+				return false;
+			}
+			if (a.scalers[i].compareTo(b.scalers[i]) != 0)  {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	// Non-static
 	private final BigDecimal[] scalers;
 	private final BigDecimal[] vectors;

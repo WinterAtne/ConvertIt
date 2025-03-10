@@ -22,4 +22,16 @@ public class Quantity {
 	public Quantity Convert(Unit target) {
 		return null;
 	}
+
+	public static Boolean IsEqual(Quantity a, Quantity b) {
+		if (!Unit.IsEqual(a.unit, b.unit)) {
+			return false;
+		}
+
+		if (a.value.compareTo(b.value) != 0) {
+			return false;
+		}
+
+		return true;
+	}
 }
