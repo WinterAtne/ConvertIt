@@ -20,8 +20,10 @@ public class Quantity {
 	}
 
 	public Quantity Convert(Unit target) {
+		assert(Unit.IsEqualDimension(this.unit, target));
+
 		BigDecimal newValue = this.value;
-		System.out.print(newValue.toString());
+		// System.out.print(newValue.toString());
 
 		for (int i = 0; i < Unit.DIMENSIONS; i++) {
 			if (
@@ -34,10 +36,10 @@ public class Quantity {
 			BigDecimal baseFactor = this.unit.getScalers()[i].divide(target.getScalers()[i], Math.context);
 			BigDecimal factor = baseFactor.pow(target.getVectors()[i].intValue(), Math.context);
 			newValue = newValue.multiply(factor, Math.context);
-			System.out.print(" * " + factor);
+			// System.out.print(" * " + factor);
 		}
 
-		System.out.print(" = " + newValue.toString());
+		// System.out.print(" = " + newValue.toString());
 		
 		return new Quantity(newValue, target);
 	}

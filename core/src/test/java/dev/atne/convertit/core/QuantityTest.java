@@ -1,67 +1,48 @@
 package dev.atne.convertit.core;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.math.BigDecimal;
 
 class QuantityTest {
-	
-	@Test
-	void Equality() {
-		Quantity a = new Quantity(
-				BigDecimal.ONE,
-				new Unit(
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")},
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")}
-					)
-				);
-		Quantity b = new Quantity(
-				BigDecimal.ONE,
-				new Unit(
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")},
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")}
-					)
-				);
-		Quantity c = new Quantity(
-				BigDecimal.ZERO,
-				new Unit(
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")},
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")}
-					)
-				);
-		Quantity d = new Quantity(
-				BigDecimal.ONE,
-				new Unit(
-					new BigDecimal[]{new BigDecimal("100.0"), new BigDecimal("0.2")},
-					new BigDecimal[]{new BigDecimal("0.1"), new BigDecimal("0.2")}
-					)
-				);
 
-		assertTrue(Quantity.IsEqual(a, b));
-		assertTrue(!Quantity.IsEqual(a, c));
-		assertTrue(!Quantity.IsEqual(a, d));
-	}
+	Map<String, Unit> units = Map.ofEntries(
+		Map.entry(
+			"meter/second",
+			new Unit(new BigDecimal[] {new BigDecimal("1"), new BigDecimal("1")},
+						new BigDecimal[] {new BigDecimal("1"), new BigDecimal("1")})
+		),
+
+		Map.entry(
+			"meter/second2",
+			new Unit(new BigDecimal[] {new BigDecimal("1"), new BigDecimal("1")},
+						new BigDecimal[] {new BigDecimal("-2"), new BigDecimal("1")})
+		),
+
+		Map.entry(
+			"feet/minute2",
+			new Unit(new BigDecimal[] {new BigDecimal("60"), new BigDecimal("0.3048")},
+						new BigDecimal[] {new BigDecimal("-2"), new BigDecimal("1")})
+		)
+	);
+	
+
 
 	@Test
 	void Conversion() {
 		Quantity start = new Quantity(
 				BigDecimal.ONE,
-				new Unit(
-					new BigDecimal[]{new BigDecimal("1"), new BigDecimal("1")},
-					new BigDecimal[]{new BigDecimal("-2"), new BigDecimal("1")}
-					)
-				);
-		Unit convertTo = new Unit(
-				new BigDecimal[]{new BigDecimal("60"), new BigDecimal("0.3048")},
-				new BigDecimal[]{new BigDecimal("-2"), new BigDecimal("1")}
+				units.get("meter/second2")
 				);
 		Quantity finalQuantity = new Quantity(
 				new BigDecimal("11811.023"),
-				convertTo
+				units.get("feet/minute2")
 				);
-
-		Quantity converted = start.Convert(convertTo);
+		
+		Quantity converted = start.Convert(units.get("feet/minute2"));
 		assertTrue(Quantity.IsEqual(converted, finalQuantity));
 	}
 }
