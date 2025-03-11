@@ -17,6 +17,7 @@ public class Unit {
 		// "amount",
 		// "luminosity",
 	};
+	public static final int DIMENSIONS = baseUnits.length;
 
 	public static Boolean IsEqualDimension(Unit a, Unit b) {
 		assert (a.vectors.length == b.vectors.length);
@@ -63,6 +64,6 @@ public class Unit {
 	}
 
 	public BigDecimal[] getVectors() {
-		return scalers.clone();
+		return vectors.clone();
 	}
 }
