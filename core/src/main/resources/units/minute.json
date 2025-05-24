@@ -1,9 +1,0 @@
-{
-	"name":"minute",
-	"alternative_names":[
-		"minutes"
-	],
-	"time_vector":1.0,
-	"time_scaler":60.0
-}
-
