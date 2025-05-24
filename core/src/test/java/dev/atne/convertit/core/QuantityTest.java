@@ -1,6 +1,7 @@
 package dev.atne.convertit.core;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,7 @@ class QuantityTest {
 		Quantity start;
 		Quantity end;
 		Quantity converted;
+		HashMap<Quantity, Quantity> before_after;
 
 		// TEST 1
 		start = new Quantity(
@@ -76,6 +78,19 @@ class QuantityTest {
 		assertTrue(Quantity.IsEqual(converted, end));
 		
 		// TEST 3
+		start = new Quantity(
+				new BigDecimal("2"),
+				units.get("feet/second2")
+				);
+		end =  new Quantity(
+				new BigDecimal("7900.416"),
+				units.get("kilometer/hour2")
+				);
+		converted = start.Convert(units.get("kilometer/hour2"));
+		System.out.println(converted.getValue().toString());
+		assertTrue(Quantity.IsEqual(converted, end));
+
+		// TEST 4
 		start = new Quantity(
 				new BigDecimal("2"),
 				units.get("feet/second2")
