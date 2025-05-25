@@ -35,10 +35,23 @@ class QuantityTest {
 		),
 
 		Map.entry(
+			"foot",
+			new Unit(new BigDecimal[] {new BigDecimal("1"), new BigDecimal("0.3048")},
+						new BigDecimal[] {new BigDecimal("0"), new BigDecimal("1")})
+		),
+
+		Map.entry(
+			"meter",
+			new Unit(new BigDecimal[] {new BigDecimal("1"), new BigDecimal("1")},
+						new BigDecimal[] {new BigDecimal("0"), new BigDecimal("1")})
+		),
+
+		Map.entry(
 			"kilometer/hour2",
 			new Unit(new BigDecimal[] {new BigDecimal("3600"), new BigDecimal("1000")},
 						new BigDecimal[] {new BigDecimal("-2"), new BigDecimal("1")})
 		)
+		
 	);
 	
 
@@ -85,6 +98,18 @@ class QuantityTest {
 				units.get("kilometer/hour2")
 				);
 		converted = start.Convert(units.get("kilometer/hour2"));
+		System.out.println(converted.getValue().toString());
+		assertTrue(Quantity.IsEqual(converted, end));
+
+		start = new Quantity(
+				new BigDecimal("1"),
+				units.get("foot")
+				);
+		end =  new Quantity(
+				new BigDecimal("0.3048"),
+				units.get("meter")
+				);
+		converted = start.Convert(units.get("meter"));
 		System.out.println(converted.getValue().toString());
 		assertTrue(Quantity.IsEqual(converted, end));
 	}

@@ -20,27 +20,23 @@ public class Quantity {
 	}
 
 	public Quantity Convert(Unit target) {
-		assert(Unit.IsEqualDimension(this.unit, target));
+		assert(Unit.IsEqualDimensions(this.unit, target));
 
 		BigDecimal newValue = this.value;
-		// System.out.print(newValue.toString());
 
 		for (int i = 0; i < Unit.DIMENSIONS; i++) {
 			if (
-				this.unit.getScalers()[i] == null ||
-				this.unit.getVectors()[i] == null ||
-				target.getScalers()[i] == null ||
-				target.getVectors()[i] == null
-				) { System.out.println("here"); continue; }
+				this.unit.getScalers()[i] == BigDecimal.ZERO ||
+				this.unit.getVectors()[i] == BigDecimal.ZERO ||
+				target.getScalers()[i] == BigDecimal.ZERO ||
+				target.getVectors()[i] == BigDecimal.ZERO
+				) { continue; }
 
 			BigDecimal baseFactor = this.unit.getScalers()[i].divide(target.getScalers()[i], Math.context);
 			BigDecimal factor = baseFactor.pow(target.getVectors()[i].intValue(), Math.context);
 			newValue = newValue.multiply(factor, Math.context);
-			// System.out.print(" * " + factor);
 		}
 
-		// System.out.print(" = " + newValue.toString());
-		
 		return new Quantity(newValue, target);
 	}
 
